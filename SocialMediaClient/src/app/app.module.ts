@@ -21,7 +21,7 @@ import { EditMemberComponent } from './Module/Member/edit-member/edit-member.com
 import { MemberDetailsComponent } from './Module/Member/member-details/member-details.component';
 import { HomeComponent } from './Module/home/home.component';
 import { PhotoEditComponent } from './Module/Member/photo-edit/photo-edit.component';
-
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +47,7 @@ import { PhotoEditComponent } from './Module/Member/photo-edit/photo-edit.compon
       positionClass:'toast-top-right'
     }),
     TabsModule.forRoot(),
-    FileUploadModule,
+    FileUploadModule,PaginationModule.forRoot()
   ],
   providers: [
 
