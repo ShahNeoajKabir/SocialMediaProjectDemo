@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using SocialMediaApi.Data;
+using SocialMediaApi.Helper;
 using SocialMediaApi.Interface;
 using SocialMediaApi.ModelClass.DTO;
 using SocialMediaApi.ModelClass.Entities;
@@ -29,11 +30,14 @@ namespace SocialMediaApi.Services
             return user;
         }
 
-        public async Task<IEnumerable<MemberDTO>> GetAllMemberAsync()
+        public async Task<PagedList<MemberDTO>> GetMembersAsync(UserParams userParams)
         {
-            return await _context.Users
+            var query = _context.Users
                 .ProjectTo<MemberDTO>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+                .AsNoTracking();
+
+            return await PagedList<MemberDTO>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
+
         }
 
         public async Task<MemberDTO> GetMemberByNameAsync(string memberName)

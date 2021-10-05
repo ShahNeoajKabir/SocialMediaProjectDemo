@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SocialMediaApi.Extentions;
+using SocialMediaApi.Helper;
 using SocialMediaApi.Interface;
 using SocialMediaApi.ModelClass.DTO;
 using SocialMediaApi.ModelClass.Entities;
@@ -42,9 +43,10 @@ namespace SocialMediaApi.Controllers
 
         [HttpGet("GetAll")]
 
-        public async Task<ActionResult<IEnumerable<MemberDTO>>> GetAll()
+        public async Task<ActionResult<IEnumerable<MemberDTO>>> GetAll([FromQuery] UserParams userParams)
         {
-            var user = await _userRepository.GetAllMemberAsync();
+            var user = await _userRepository.GetMembersAsync(userParams);
+            Response.AddPaginationHeader(user.CurrentPage, user.PageSize, user.TotalCount, user.TotalPage);
             return Ok(user);
         }
 

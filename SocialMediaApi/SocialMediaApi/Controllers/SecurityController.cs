@@ -73,7 +73,7 @@ namespace SocialMediaApi.Controllers
         {
           
                 var user = await _context.Users
-                    //.Include(p => p.Photos)
+                    .Include(p => p.Photos)
                     .SingleOrDefaultAsync(p => p.UserName == loginDTO.UserName);
 
                 if (user == null) return BadRequest("Invalid UserName");
@@ -88,7 +88,7 @@ namespace SocialMediaApi.Controllers
                 {
                     UserName = user.UserName,
                     Token = _token.CreateToken(user),
-                    //PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
+                    PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
                 };
           
           

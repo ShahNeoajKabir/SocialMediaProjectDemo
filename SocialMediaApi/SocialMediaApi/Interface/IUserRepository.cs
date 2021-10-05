@@ -1,4 +1,5 @@
-﻿using SocialMediaApi.ModelClass.DTO;
+﻿using SocialMediaApi.Helper;
+using SocialMediaApi.ModelClass.DTO;
 using SocialMediaApi.ModelClass.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace SocialMediaApi.Interface
         Task<AppUser> AddUserAsync(AppUser user);
         Task<AppUser> GetUserByNameAsync(string userName);
         Task<AppUser> GetUserById(int id);
-        Task<IEnumerable<MemberDTO>> GetAllMemberAsync();
+        Task<PagedList<MemberDTO>> GetMembersAsync(UserParams userParams);
         Task<MemberDTO> GetMemberByNameAsync(string memberName);
         void Update(AppUser user);
         Task<bool> SaveAllAsync();

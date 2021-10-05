@@ -23,7 +23,7 @@
               </ul>
 
               <div class="dropdown"  *ngIf="(_loginService.CurrentUser$| async) as user" dropdown  style="cursor: pointer;">  
-                <!-- <img src="{{member.photoUrl}}" alt="{{member.userName}}"> -->
+                <img src="{{user.photoUrl}}" alt="{{user.userName}}">
                 <a class="dropdown-toggle text-light ml-2" dropdownToggle>Welcome {{user.userName | titlecase}}</a>
                   <div class=" dropdown-menu mt-3" *dropdownMenu> 
                     <a  class="dropdown-item" routerLink="/Members/edit" > 

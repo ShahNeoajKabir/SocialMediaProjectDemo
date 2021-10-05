@@ -19,7 +19,6 @@ export class NavBarComponent implements OnInit {
     private _toaster:ToastrService) { }
 
   ngOnInit(): void {
-    // this.getuserdetails();
   }
 
 
@@ -32,17 +31,6 @@ export class NavBarComponent implements OnInit {
     })
    }
 
-  //  getuserdetails()
-  //  {
-  //    let userName:any=this._activate.snapshot.paramMap.get('userName')!;
-  //    console.log(userName);
-
-  //   //  this._userService.GetByUserName.subscribe(res=>{
-  //   //    this.member=res;
-
-  //   //  })
-
-  //  }
 
 
    
