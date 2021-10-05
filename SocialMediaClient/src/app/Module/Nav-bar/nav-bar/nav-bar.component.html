@@ -15,9 +15,6 @@
                     <a class="nav-link" routerLink="/Messeges" routerLinkActive='active'>Messeges</a>
                   </li>
                   
-                  <li class="nav-item">
-                    <a class="nav-link" (click)="Logedout()">Logout</a>
-                  </li>
 
                 </ng-container>
                 <!-- <li class="nav-item">
@@ -25,12 +22,15 @@
                 </li> -->
               </ul>
 
-              <div class="dropdown"  *ngIf="(_loginService.CurrentUser$| async) as user" dropdown >  
-                <!-- <img src="{{user.photoUrl}}" alt="{{user.userName}}"> -->
+              <div class="dropdown"  *ngIf="(_loginService.CurrentUser$| async) as user" dropdown  style="cursor: pointer;">  
+                <!-- <img src="{{member.photoUrl}}" alt="{{member.userName}}"> -->
                 <a class="dropdown-toggle text-light ml-2" dropdownToggle>Welcome {{user.userName | titlecase}}</a>
                   <div class=" dropdown-menu mt-3" *dropdownMenu> 
-                    <a  class="dropdown-item" routerLink="/Members/edit"> 
+                    <a  class="dropdown-item" routerLink="/Members/edit" > 
                       Edit Profile
+                    </a>
+                    <a  class="dropdown-item"(click)="Logedout()"> 
+                       Logout
                     </a>
                     <div class="div dropdown-divider"></div>
 

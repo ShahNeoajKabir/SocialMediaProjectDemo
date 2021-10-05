@@ -44,6 +44,7 @@ export class MemberDetailsComponent implements OnInit {
   getMemberDetails(){
     this._userService.GetByUserName(this.activateRoute.snapshot.paramMap.get('userName')).subscribe(res=>{
       this.member=res;
+      this.galleryImages = this.getImages();
     })
   }
 

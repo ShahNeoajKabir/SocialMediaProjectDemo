@@ -20,6 +20,7 @@ import { MemberCardComponent } from './Module/Member/member-card/member-card.com
 import { EditMemberComponent } from './Module/Member/edit-member/edit-member.component';
 import { MemberDetailsComponent } from './Module/Member/member-details/member-details.component';
 import { HomeComponent } from './Module/home/home.component';
+import { PhotoEditComponent } from './Module/Member/photo-edit/photo-edit.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { HomeComponent } from './Module/home/home.component';
     MemberCardComponent,
     EditMemberComponent,
     MemberDetailsComponent,
-    HomeComponent
+    HomeComponent,
+    PhotoEditComponent
   ],
   imports: [
     BrowserModule,

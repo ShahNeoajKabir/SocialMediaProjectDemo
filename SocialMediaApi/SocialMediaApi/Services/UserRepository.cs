@@ -38,9 +38,9 @@ namespace SocialMediaApi.Services
 
         public async Task<MemberDTO> GetMemberByNameAsync(string memberName)
         {
-            return await _context.Users.Where(p => p.UserName == memberName)
+            return await _context.Users.Where(p => p.UserName.ToLower() == memberName.ToLower())
                 .ProjectTo<MemberDTO>(_mapper.ConfigurationProvider)
-                .SingleOrDefaultAsync();
+                .FirstOrDefaultAsync();
 
         }
 

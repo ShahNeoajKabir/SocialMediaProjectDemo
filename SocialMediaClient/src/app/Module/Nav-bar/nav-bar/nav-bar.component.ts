@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Member } from 'src/app/Model/Member';
 import { Registration } from 'src/app/Model/Registration';
 import { LoginService } from 'src/app/Service/Login/login.service';
+import { MemberService } from 'src/app/Service/Member/member.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -11,9 +13,13 @@ import { LoginService } from 'src/app/Service/Login/login.service';
 })
 export class NavBarComponent implements OnInit {
   model:any={};
-  constructor(public _loginService:LoginService , private _router:Router , private _toaster:ToastrService) { }
+  member:Member;
+  constructor(public _loginService:LoginService ,private _userService:MemberService, private _router:Router , 
+    private _activate:ActivatedRoute,
+    private _toaster:ToastrService) { }
 
   ngOnInit(): void {
+    // this.getuserdetails();
   }
 
 
@@ -25,6 +31,18 @@ export class NavBarComponent implements OnInit {
       this._toaster.error(er.error);
     })
    }
+
+  //  getuserdetails()
+  //  {
+  //    let userName:any=this._activate.snapshot.paramMap.get('userName')!;
+  //    console.log(userName);
+
+  //   //  this._userService.GetByUserName.subscribe(res=>{
+  //   //    this.member=res;
+
+  //   //  })
+
+  //  }
 
 
    
