@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SocialMediaApi.ModelClass.Entities;
 using System;
 using System.Collections.Generic;
@@ -7,13 +9,15 @@ using System.Threading.Tasks;
 
 namespace SocialMediaApi.Data
 {
-    public class DatabaseContext : DbContext
+    public class DatabaseContext : IdentityDbContext<AppUser,AppRole,int,IdentityUserClaim<int>,AppUserRole,IdentityUserLogin<int>,
+        IdentityRoleClaim<int>,IdentityUserToken<int>
+        >
     {
         public DatabaseContext( DbContextOptions<DatabaseContext> options) : base(options)
         {
         }
 
-        public DbSet<AppUser> Users { get; set; }
+        public DbSet<UserLike> Likes { get; set; }
 
 
 
@@ -21,6 +25,34 @@ namespace SocialMediaApi.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<AppUser>()
+                .HasMany(p => p.UserRole)
+                .WithOne(p => p.User)
+                .HasForeignKey(f => f.UserId)
+                .IsRequired();
+
+            modelBuilder.Entity<AppRole>()
+               .HasMany(p => p.UserRole)
+               .WithOne(p => p.Role)
+               .HasForeignKey(f => f.RoleId)
+               .IsRequired();
+
+
+            modelBuilder.Entity<UserLike>()
+                .HasKey(k => new { k.SourceUserId, k.LikedUserId });
+
+            modelBuilder.Entity<UserLike>()
+                .HasOne(o => o.SourceUser)
+                .WithMany(p => p.LikedUsers)
+                .HasForeignKey(f => f.SourceUserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<UserLike>()
+               .HasOne(o => o.LikedUser)
+               .WithMany(p => p.LikedByUsers)
+               .HasForeignKey(f => f.LikedUserId)
+               .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

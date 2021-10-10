@@ -18,6 +18,7 @@ namespace SocialMediaApi.Helper
                 .ForMember(des => des.Age, opt => opt.MapFrom(x => x.DateOfBirth.CalculateAge()));
             CreateMap<Photo, PhotoDTO>();
             CreateMap<MemberUpdateDTO, AppUser>();
+            CreateMap<RegisterDTO, AppUser>();
 
         }
     }

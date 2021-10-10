@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SocialMediaApi.Data;
@@ -18,13 +20,20 @@ namespace SocialMediaApi.Controllers
     [ApiController]
     public class SecurityController : ControllerBase
     {
-        private readonly DatabaseContext _context;
-        private readonly ITokenService _token;
 
-        public SecurityController(DatabaseContext context , ITokenService token)
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
+        private readonly ITokenService _token;
+        private readonly IMapper _mapper;
+
+        public SecurityController(UserManager<AppUser> userManager,SignInManager<AppUser> signInManager, ITokenService token
+            ,IMapper mapper
+            )
         {
-            _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
             _token = token;
+            _mapper = mapper;
         }
 
         [HttpPost("Registration")]
@@ -35,29 +44,18 @@ namespace SocialMediaApi.Controllers
             {
                 if (await IsExist(registerDTO.UserName)) return BadRequest("UserName Already Taken!!!");
 
-                using var hmac = new HMACSHA512();
 
-                var user = new AppUser
-                {
-                    UserName = registerDTO.UserName,
-                    PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDTO.Password)),
-                    PasswordSalt = hmac.Key,
-                    KnownAs = registerDTO.KnownAs,
-                    Created = registerDTO.Created,
-                    LastActive = registerDTO.LastActive,
-                    City = registerDTO.City,
-                    Country = registerDTO.Country,
-                    DateOfBirth = registerDTO.DateOfBirth,
-                    Gender = registerDTO.Gender
-                };
+                var user = _mapper.Map<AppUser>(registerDTO);
 
-                await _context.Users.AddAsync(user);
-                await _context.SaveChangesAsync();
+                user.UserName = registerDTO.UserName.ToLower();
+                var result = await _userManager.CreateAsync(user, registerDTO.Password);
+                if (!result.Succeeded) return BadRequest(result.Errors);
 
                 return new TokenDTO
                 {
                     UserName = user.UserName,
                     Token = _token.CreateToken(user)
+
                 };
             }
             catch (Exception)
@@ -72,18 +70,16 @@ namespace SocialMediaApi.Controllers
         public async Task<ActionResult<TokenDTO>>Login(LoginDTO loginDTO)
         {
           
-                var user = await _context.Users
+                var user = await _userManager.Users
                     .Include(p => p.Photos)
-                    .SingleOrDefaultAsync(p => p.UserName == loginDTO.UserName);
+                    .SingleOrDefaultAsync(p => p.UserName == loginDTO.UserName.ToLower());
 
                 if (user == null) return BadRequest("Invalid UserName");
 
-                using var hmac = new HMACSHA512(user.PasswordSalt);
-                var computerhas = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDTO.Password));
-                for (int i = 0; i < computerhas.Length; i++)
-                {
-                    if (computerhas[i] != user.PasswordHash[i]) return Unauthorized("Invalid Password");
-                }
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDTO.Password, false);
+
+            if (!result.Succeeded) return Unauthorized();
+
                 return new TokenDTO
                 {
                     UserName = user.UserName,
@@ -101,7 +97,7 @@ namespace SocialMediaApi.Controllers
 
         private async Task<bool> IsExist(string UserName)
         {
-            return await _context.Users.AnyAsync(x => x.UserName == UserName);
+            return await _userManager.Users.AnyAsync(x => x.UserName == UserName);
         }
     }
 }
