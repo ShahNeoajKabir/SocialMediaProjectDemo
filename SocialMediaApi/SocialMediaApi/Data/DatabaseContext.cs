@@ -38,6 +38,13 @@ namespace SocialMediaApi.Data
                .HasForeignKey(f => f.RoleId)
                .IsRequired();
 
+            //Seed Data
+            modelBuilder.Entity<AppRole>().HasData(
+                new AppRole { Id = 1, Name = "Admin" },
+                new AppRole { Id = 2, Name = "Moderator" },
+                new AppRole { Id = 3, Name = "Member" }
+            );
+
 
             modelBuilder.Entity<UserLike>()
                 .HasKey(k => new { k.SourceUserId, k.LikedUserId });
