@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SocialMediaApi.Extentions;
@@ -40,7 +41,7 @@ namespace SocialMediaApi.Controllers
             return BadRequest("Can't Added User. Please Try Again");
         }
 
-
+        [Authorize(Roles ="Admin")]
         [HttpGet("GetAll")]
 
         public async Task<ActionResult<IEnumerable<MemberDTO>>> GetAll([FromQuery] UserParams userParams)

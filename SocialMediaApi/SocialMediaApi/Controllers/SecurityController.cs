@@ -51,10 +51,13 @@ namespace SocialMediaApi.Controllers
                 var result = await _userManager.CreateAsync(user, registerDTO.Password);
                 if (!result.Succeeded) return BadRequest(result.Errors);
 
+                var roleresult = await _userManager.AddToRoleAsync(user, "Member");
+                if (!roleresult.Succeeded) return BadRequest(roleresult.Errors);
+
                 return new TokenDTO
                 {
                     UserName = user.UserName,
-                    Token = _token.CreateToken(user)
+                    Token =await _token.CreateToken(user)
 
                 };
             }
@@ -83,7 +86,7 @@ namespace SocialMediaApi.Controllers
                 return new TokenDTO
                 {
                     UserName = user.UserName,
-                    Token = _token.CreateToken(user),
+                    Token =await _token.CreateToken(user),
                     PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
                 };
           

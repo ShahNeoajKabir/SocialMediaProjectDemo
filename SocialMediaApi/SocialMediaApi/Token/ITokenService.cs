@@ -8,6 +8,6 @@ namespace SocialMediaApi.Token
 {
     public interface ITokenService
     {
-        string CreateToken(AppUser user);
+        Task<string> CreateToken(AppUser user);
     }
 }
