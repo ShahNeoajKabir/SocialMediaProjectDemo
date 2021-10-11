@@ -41,7 +41,6 @@ namespace SocialMediaApi.Controllers
             return BadRequest("Can't Added User. Please Try Again");
         }
 
-        [Authorize(Roles ="Admin")]
         [HttpGet("GetAll")]
 
         public async Task<ActionResult<IEnumerable<MemberDTO>>> GetAll([FromQuery] UserParams userParams)
