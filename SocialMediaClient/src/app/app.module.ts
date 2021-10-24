@@ -22,6 +22,7 @@ import { MemberDetailsComponent } from './Module/Member/member-details/member-de
 import { HomeComponent } from './Module/home/home.component';
 import { PhotoEditComponent } from './Module/Member/photo-edit/photo-edit.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { AdminPanelComponent } from './Module/Admin/admin-panel/admin-panel.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +33,8 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     EditMemberComponent,
     MemberDetailsComponent,
     HomeComponent,
-    PhotoEditComponent
+    PhotoEditComponent,
+    AdminPanelComponent
   ],
   imports: [
     BrowserModule,
